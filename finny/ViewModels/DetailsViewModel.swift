@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  DetailsViewModel.swift
 //  finny
 //
 //  Created by Julia Hoang on 2023-08-14.
@@ -7,22 +7,26 @@
 
 import Foundation
 
-class HomeViewModel: ObservableObject {
+@MainActor
+class DetailsViewModel: ObservableObject {
     @Published var budget: BudgetDTO?
     var totalIncome: Double {
-        guard let budget = budget else { return 0 }
-        return budget.income.reduce(0, { $0 + $1.amount })
+        let incomes = transactions.filter({ $0.type == .income })
+        return incomes.reduce(0, { $0 + $1.amount })
     }
     
     var totalExpenses: Double {
-        guard let budget = budget else { return 0 }
-        return budget.expenses.reduce(0, { $0 + $1.amount })
+        let expenses = transactions.filter({ $0.type == .expense })
+        return expenses.reduce(0, { $0 + $1.amount })
     }
-    
+
     @Published var newTitle: String = ""
     @Published var newAmount: Double = 0
     @Published var newCategory: BudgetDTO.Category = .food
     @Published var selectedCard: BudgetDTO.CardCompany = .visa
+    @Published var state = "Loading..."
+    
+    @Published var transactions: [BudgetDTO.Transaction] = []
     
     private let fileURL: URL
     
@@ -41,9 +45,21 @@ class HomeViewModel: ObservableObject {
             let decoder = JSONDecoder()
             let budget = try decoder.decode(BudgetDTO.self, from: jsonData)
             self.budget = budget
+            
+            updateTransactionList()
         } catch {
+            state = "Error loading content"
             print("Error reading or decoding JSON: \(error)")
         }
+    }
+    
+    // Get the list of transactions for the selected card
+    func updateTransactionList() {
+        guard let budget = budget else { return }
+        let currentMonth = Date().toShortMDYString().split(separator: " ")[0]
+        let transactions = budget.expenses.filter { $0.cardID == selectedCard } + budget.income.filter { $0.cardID == selectedCard }
+        let currentMonthTransactions = transactions.filter { $0.date.split(separator: " ")[0] == currentMonth }
+        self.transactions = currentMonthTransactions.sorted(by: { $0.date > $1.date })
     }
     
     // Add a new income to the budget object and write the updated budget object to the JSON file
@@ -53,8 +69,9 @@ class HomeViewModel: ObservableObject {
         let newIncome = BudgetDTO.Transaction(title: newTitle,
                                               category: newCategory,
                                               amount: newAmount,
-                                              date: Date().toString(),
-                                              cardID: selectedCard)
+                                              date: Date().toShortMDYString(),
+                                              cardID: selectedCard,
+                                              type: .income)
         budget.income.append(newIncome)
         
         if let index = budget.cards.firstIndex(where: { $0.name.rawValue == selectedCard.rawValue }) {
@@ -77,6 +94,7 @@ class HomeViewModel: ObservableObject {
             newAmount = 0
             newCategory = .food
         } catch {
+            state = "Error adding income"
             print("\nError writing JSON: \(error)")
         }
     }

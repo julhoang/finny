@@ -11,15 +11,13 @@ struct SettingsView: View {
     @StateObject var viewModel: SettingsViewModel = .init()
     
     var body: some View {
-        
-        
         List {
             Button("Reset Data") {
                 viewModel.resetBudget()
             }
             
-            Button("Add Sample Incomes") {
-                viewModel.addSampleIncomes()
+            Button("Add Sample Transactions") {
+                viewModel.addSampleTransactions()
             }
         }
     }

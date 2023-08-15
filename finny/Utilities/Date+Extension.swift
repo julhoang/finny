@@ -8,9 +8,15 @@
 import Foundation
 
 extension Date {
-    func toString() -> String {
+    func toShortMDYString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM dd, yy"
+        return dateFormatter.string(from: self)
+    }
+    
+    func getMonthString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM"
         return dateFormatter.string(from: self)
     }
 }

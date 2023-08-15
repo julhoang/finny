@@ -19,6 +19,12 @@ struct finnyApp: App {
                         Text("Home")
                     }
                 
+                DetailsView()
+                    .tabItem {
+                        Image(systemName: "number.square")
+                        Text("Details")
+                    }
+                
                 SettingsView()
                     .tabItem {
                         Image(systemName: "gear")

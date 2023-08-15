@@ -22,6 +22,8 @@ struct Card: View {
             
             Spacer()
             
+            Text("Balance")
+                .font(.subheadline)
             Text("$ ")
                 .font(.title3)
             +
