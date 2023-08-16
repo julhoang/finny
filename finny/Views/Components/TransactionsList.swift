@@ -38,9 +38,15 @@ struct TransactionsList: View {
                         Spacer()
 
                         VStack(alignment: .trailing) {
-                            Text("\(transaction.type == .expense ? "-$" : "$")\(String(format: "%.2f", transaction.amount))")
-                                .foregroundColor(transaction.type == .income ? .green : .primary)
-                                .bold()
+                            if transaction.type == .income {
+                                Text(transaction.amount.formattedAsCurrency())
+                                    .foregroundColor(.green)
+                                    .bold()
+                            } else {
+                                Text(transaction.amount.invert().formattedAsCurrency())
+                                    .bold()
+                            }
+                            
                             Text(transaction.date)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
@@ -53,8 +59,12 @@ struct TransactionsList: View {
 }
 
 struct TransactionsList_Previews: PreviewProvider {
-    static let expense1 = BudgetDTO.Transaction(title: "Groceries", category: .food, amount: 100.0, date: Date().toShortMDYString(), cardID: .visa, type: .expense)
-    static let expense2 = BudgetDTO.Transaction(title: "Gas", category: .transportation, amount: 50.0, date: Date().toShortMDYString(), cardID: .visa, type: .expense)
+    static let expense1 = BudgetDTO.Transaction(title: "Groceries", category: .food,
+                                                amount: 100.0, date: Date().toShortMDYString(),
+                                                cardID: .visa, type: .expense)
+    static let expense2 = BudgetDTO.Transaction(title: "Gas", category: .transportation,
+                                                amount: 50.0, date: Date().toShortMDYString(),
+                                                cardID: .visa, type: .expense)
     
     static var previews: some View {
         TransactionsList(title: "August Transactions", transactions: .constant([expense1, expense2]))

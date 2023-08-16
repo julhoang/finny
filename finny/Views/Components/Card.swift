@@ -24,10 +24,7 @@ struct Card: View {
             
             Text("Balance")
                 .font(.subheadline)
-            Text("$ ")
-                .font(.title3)
-            +
-            Text("\(String(format: "%.2f", card.balance))")
+            Text(card.balance.formattedAsCurrency())
                 .font(.title)
                 .bold()
         }

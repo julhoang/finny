@@ -15,7 +15,7 @@ struct finnyApp: App {
         // set up navigation tab bar
         WindowGroup {
             TabView {
-                HomeView()
+                HomeView(budgetEntity: budgetEntity)
                     .tabItem {
                         Image(systemName: "house")
                         Text("Home")

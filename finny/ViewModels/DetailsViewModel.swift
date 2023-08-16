@@ -16,12 +16,12 @@ class DetailsViewModel: ObservableObject {
     @Published var otherTransactions: [BudgetDTO.Transaction] = []
     
     var totalIncome: Double {
-        let incomes = allTransactions.filter({ $0.type == .income })
+        let incomes = currentMonthTransactions.filter({ $0.type == .income })
         return incomes.reduce(0, { $0 + $1.amount })
     }
     
     var totalExpenses: Double {
-        let expenses = allTransactions.filter({ $0.type == .expense })
+        let expenses = currentMonthTransactions.filter({ $0.type == .expense })
         return expenses.reduce(0, { $0 + $1.amount })
     }
     

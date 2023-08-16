@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E30DC9392A8D605D004E9654 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30DC9382A8D605D004E9654 /* Double+Extension.swift */; };
 		E319C1F02A8ACD3700152C3C /* finnyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E319C1EF2A8ACD3700152C3C /* finnyApp.swift */; };
 		E319C1F42A8ACD3800152C3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E319C1F32A8ACD3800152C3C /* Assets.xcassets */; };
 		E319C1F72A8ACD3800152C3C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E319C1F62A8ACD3800152C3C /* Preview Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E30DC9382A8D605D004E9654 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		E319C1EC2A8ACD3700152C3C /* finny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = finny.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E319C1EF2A8ACD3700152C3C /* finnyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = finnyApp.swift; sourceTree = "<group>"; };
 		E319C1F32A8ACD3800152C3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			children = (
 				E319C20B2A8AD79500152C3C /* Date+Extension.swift */,
 				E38612312A8D2CB60047E12A /* String+Extension.swift */,
+				E30DC9382A8D605D004E9654 /* Double+Extension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 			files = (
 				E3A28E3B2A8AD8CB00BDD57B /* SettingsView.swift in Sources */,
 				E3A28E402A8ADAF300BDD57B /* Card.swift in Sources */,
+				E30DC9392A8D605D004E9654 /* Double+Extension.swift in Sources */,
 				E319C2052A8ACE6F00152C3C /* BudgetDTO.swift in Sources */,
 				E319C2002A8ACDC000152C3C /* DetailsView.swift in Sources */,
 				E386122A2A8C01310047E12A /* HomeView.swift in Sources */,

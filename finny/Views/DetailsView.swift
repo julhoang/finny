@@ -36,7 +36,7 @@ struct DetailsView: View {
     
     private func scrollViewUI(content: BudgetDTO) -> some View {
          VStack(alignment: .leading, spacing: 30) {
-             Text("Card Details")
+             Text("Transaction Details")
                  .font(.title)
                  .bold()
                  .padding(.horizontal, 20)
@@ -96,7 +96,7 @@ struct DetailsView: View {
                     Text("Income")
                         .font(.title3)
                         .bold()
-                    Text("$ \(String(format: "%.2f", viewModel.totalIncome))")
+                    Text(viewModel.totalIncome.formattedAsCurrency())
                         .font(.title3)
                         .bold()
                 }
@@ -107,7 +107,7 @@ struct DetailsView: View {
                     Text("Expense")
                         .font(.title3)
                         .bold()
-                    Text("$ \(String(format: "%.2f", viewModel.totalExpenses))")
+                    Text(viewModel.totalExpenses.formattedAsCurrency())
                         .font(.title3)
                         .bold()
                 }
