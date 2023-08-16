@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct finnyApp: App {
+    @StateObject var budgetEntity: BudgetModel = .init()
+    
     var body: some Scene {
         // set up navigation tab bar
         WindowGroup {
@@ -19,7 +21,7 @@ struct finnyApp: App {
                         Text("Home")
                     }
                 
-                DetailsView()
+                DetailsView(budgetEntity: budgetEntity)
                     .tabItem {
                         Image(systemName: "number.square")
                         Text("Details")
@@ -31,6 +33,7 @@ struct finnyApp: App {
                         Text("Settings")
                     }
             }
+            .environmentObject(budgetEntity)
         }
     }
 }

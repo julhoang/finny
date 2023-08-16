@@ -8,23 +8,30 @@
 import SwiftUI
 
 struct DetailsView: View {
-    @StateObject var viewModel: DetailsViewModel = .init()
+    @EnvironmentObject var budgetEntity: BudgetModel
+    @StateObject var viewModel: DetailsViewModel
     
     var body: some View {
         VStack {
-            if let content = viewModel.budget {
-                ViewThatFits(in: .vertical) {
-                    scrollViewUI(content: content)
-                    ScrollView(showsIndicators: false) { scrollViewUI(content: content) }
-                }
-            } else {
-                Text(viewModel.state)
+            switch budgetEntity.state {
+            case .loading: Text("Loading...")
+            case .showingContent(let budget):
+                    ViewThatFits(in: .vertical) {
+                        scrollViewUI(content: budget)
+                        ScrollView(showsIndicators: false) { scrollViewUI(content: budget) }
+                    }
+            case .error(let error): Text(error)
             }
         }
         .edgesIgnoringSafeArea(.horizontal)
         .onAppear {
-            viewModel.getContent()
+            viewModel.updateTransactionList()
         }
+    }
+    
+    init(budgetEntity: BudgetModel) {
+        let detailsViewModel = DetailsViewModel(budgetEntity: budgetEntity)
+        _viewModel = StateObject(wrappedValue: detailsViewModel)
     }
     
     @ViewBuilder
@@ -35,10 +42,10 @@ struct DetailsView: View {
                 .font(.title)
                 .bold()
             
+            cardSection(content: content)
+            
             overViewSection()
                 .padding(.horizontal, 20)
-            
-            cardSection(content: content)
             
             TransactionsList(title: Date().getMonthString() + " Transactions",
                              transactions: $viewModel.transactions)
@@ -46,7 +53,6 @@ struct DetailsView: View {
             
             Spacer()
         }
-        .navigationTitle("Details")
         .onChange(of: viewModel.selectedCard) { _ in
             viewModel.updateTransactionList()
         }
@@ -86,48 +92,27 @@ struct DetailsView: View {
                         .font(.title3)
                         .bold()
                     Text("$ \(String(format: "%.2f", viewModel.totalIncome))")
-                        .font(.title)
+                        .font(.title3)
                         .bold()
                 }
                 
                 Spacer()
                 
-                VStack(alignment: .leading) {
+                VStack(alignment: .trailing) {
                     Text("Expense")
                         .font(.title3)
                         .bold()
                     Text("$ \(String(format: "%.2f", viewModel.totalExpenses))")
-                        .font(.title)
+                        .font(.title3)
                         .bold()
                 }
             }
-        }
-    }
-    
-    
-    
-    @ViewBuilder
-    private func inputSection() -> some View {
-        TextField("New Transaction", text: $viewModel.newTitle)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-        
-        TextField("New Amount", value: $viewModel.newAmount, formatter: NumberFormatter())
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-        
-        Picker(selection: $viewModel.newCategory, label: Text("Category")) {
-            ForEach(BudgetDTO.Category.allCases, id: \.self) { category in
-                Text(category.rawValue).tag(category)
-            }
-        }
-        
-        Button("Add Income") {
-            viewModel.addIncome()
         }
     }
 }
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsView()
+        DetailsView(budgetEntity: BudgetModel())
     }
 }
