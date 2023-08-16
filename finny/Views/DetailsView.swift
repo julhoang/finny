@@ -25,7 +25,7 @@ struct DetailsView: View {
         }
         .edgesIgnoringSafeArea(.horizontal)
         .onAppear {
-            viewModel.updateTransactionList()
+            viewModel.updateTransactionLists()
         }
     }
     
@@ -34,29 +34,33 @@ struct DetailsView: View {
         _viewModel = StateObject(wrappedValue: detailsViewModel)
     }
     
-    @ViewBuilder
     private func scrollViewUI(content: BudgetDTO) -> some View {
-        VStack(alignment: .leading, spacing: 30) {
-            Text("Card Details")
-                .padding(.leading, 20)
-                .font(.title)
-                .bold()
-            
-            cardSection(content: content)
-            
-            overViewSection()
-                .padding(.horizontal, 20)
-            
-            TransactionsList(title: Date().getMonthString() + " Transactions",
-                             transactions: $viewModel.transactions)
-                .padding(.horizontal, 20)
-            
-            Spacer()
-        }
-        .onChange(of: viewModel.selectedCard) { _ in
-            viewModel.updateTransactionList()
-        }
-    }
+         VStack(alignment: .leading, spacing: 30) {
+             Text("Card Details")
+                 .font(.title)
+                 .bold()
+                 .padding(.horizontal, 20)
+
+             cardSection(content: content)
+             
+             VStack(spacing: 30) {
+                 overViewSection()
+
+                 TransactionsList(title: Date().getMonthString() + " Transactions",
+                                  transactions: $viewModel.currentMonthTransactions)
+
+                 TransactionsList(title: "Older Transactions",
+                                  transactions: $viewModel.otherTransactions)
+
+                 Spacer()
+             }
+             .padding(.horizontal, 20)
+             
+         }
+         .onChange(of: viewModel.selectedCard) { _ in
+             viewModel.updateTransactionLists()
+         }
+     }
     
     @ViewBuilder
     private func cardSection(content: BudgetDTO) -> some View {
@@ -80,6 +84,7 @@ struct DetailsView: View {
                 }
             }
             .ignoresSafeArea()
+            .animation(.easeInOut(duration: 0.3), value: viewModel.selectedCard)
         }
     }
     
