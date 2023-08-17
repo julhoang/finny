@@ -18,7 +18,7 @@ struct TransactionsList: View {
                 .bold()
             
             VStack {
-                ForEach(transactions, id: \.title) { transaction in
+                ForEach(transactions, id: \.id) { transaction in
                     HStack(spacing: 20) {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(transaction.category.getPastelColor())

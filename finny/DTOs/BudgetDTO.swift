@@ -65,12 +65,23 @@ struct BudgetDTO: Codable {
     }
     
     struct Transaction: Codable {
+        let id: UUID
         let title: String
         let category: Category
         let amount: Double
         let date: String
         let cardID: CardCompany
         let type: TransactionType
+        
+        init(title: String, category: Category, amount: Double, date: String, cardID: CardCompany, type: TransactionType) {
+            self.id = UUID()
+            self.title = title
+            self.category = category
+            self.amount = amount
+            self.date = date
+            self.cardID = cardID
+            self.type = type
+        }
     }
     
     let user: User

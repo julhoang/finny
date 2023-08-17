@@ -66,11 +66,11 @@ struct DetailsView: View {
     private func cardSection(content: BudgetDTO) -> some View {
         ScrollViewReader { scrollView in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                HStack(spacing: 10) {
                     ForEach(content.cards, id: \.number) { card in
                         Card(card: card, isActive: card.name == viewModel.selectedCard)
                             .id(card.number)
-                            .padding(.leading, 20)
+                            
                             .onTapGesture {
                                 withAnimation {
                                     viewModel.selectedCard = card.name
@@ -82,6 +82,7 @@ struct DetailsView: View {
                     Spacer()
                         .frame(width: 10)
                 }
+                .padding(.leading, 20)
             }
             .ignoresSafeArea()
             .animation(.easeInOut(duration: 0.3), value: viewModel.selectedCard)
